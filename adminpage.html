@@ -1,0 +1,109 @@
+<html>
+<head>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="57157524-design-of-rajasthani-man-with-turban-and-moustache-in-indian-art-style.jpg" />
+	<link rel="stylesheet" type="text/css" href="frontend.css"/>
+    <title>Tourism</title>
+    <style type="text/css">
+    #signupblock{
+    transition:width 2s;
+    }
+    #signupblock:hover{
+    width:90%;
+    }
+    #mapholder a{
+	border:none;
+	background-color:rgba(0,0,0,0);
+	}
+		
+    </style>
+	
+  </head>
+<body background="background.jpg">
+<div id="navbar-div">
+		<div id="logo-div">
+				<img id="logo" src="57157524-design-of-rajasthani-man-with-turban-and-moustache-in-indian-art-style.jpg" width="50px"/>
+		</div>
+		<div class="element-div">
+			<h2>PlanMyTour</h2>
+		</div>
+		
+		<div id="help" >
+			<a href="login.html">Sign Out</a>
+		</div>
+		
+		<div id="login">
+			<a href="http://localhost:8080/youyou/TravelHis.jsp">Travel History</a>
+		</div>
+	
+	</div>
+	<br><br><br><br><br><br>
+<div id="signupblock">
+<p id="demo"></p>
+
+<div id="mapholder"></div>
+<form name="fi" action="http://localhost:8080/Tourism/AddSpot.jsp">
+<input type="hidden" name="dlat">
+<input type="hidden" name="dlon">
+Destination:
+        <input type="text" id="txtDestination" name="dest" placeholder="Andheri, Mumbai, India" style="width: 75%;" onfocusout="GetRoute()" required/>
+<input type="submit" value="Add" style="width:45%;">
+
+
+</form>
+</div>
+<script src="https://maps.google.com/maps/api/js?key=AIzaSyBLP2mkhJz21qggbaJ_GEMCrlqH3ITapX4&sensor=false&libraries=places"></script>
+<script>
+
+var destination;
+google.maps.event.addDomListener(window, 'load', function () {
+    
+    new google.maps.places.SearchBox(document.getElementById('txtDestination'));
+    directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': false });
+});
+ function GetRoute() {
+    destination = document.getElementById("txtDestination").value;
+    var myLat;
+    var myLong;
+ 
+    
+    var geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({address: destination}, function(results, status) {
+
+      if (status == google.maps.GeocoderStatus.OK) {
+
+        var myResult = results[0].geometry.location; // reference LatLng value
+  	  var myLat=myResult.lat();
+  	  var myLong=myResult.lng();
+        fi.dlat.value=myLat;
+        fi.dlon.value=myLong;
+        var mumbai = new google.maps.LatLng(myLat, myLong);
+        var mapholder = document.getElementById('mapholder');
+        mapholder.style.height = '200px';
+        mapholder.style.width = '100%';
+
+        var mapOptions = {
+            zoom: 27,
+            center: mumbai
+        };
+        var map = new google.maps.Map(document.getElementById('mapholder'), mapOptions);
+        var marker = new google.maps.Marker({position:mumbai,map:map,title:"You are here!"});
+
+        
+
+      }
+    });
+     }
+ 	
+ document.getElementById("signupblock").addEventListener("transitionend", myFunction);
+
+ function myFunction() {
+	 this.style.width="90%";
+	//document.getElementById("signupblo").style.removeProperty("transition");
+ }
+
+</script>
+
+</body>
+</html>
